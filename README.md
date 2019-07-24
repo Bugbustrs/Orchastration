@@ -59,7 +59,7 @@ type:"http"
 ```
  #### TCP SpeedTest
 ```
-type:"TCP Speed Test"
+type:"tcp_speed_test"
 ```
 
  #### Trace Route
@@ -128,13 +128,19 @@ priority:1000
  {
 	parameters:
 	 {
-			url:"www.google.com" 
+			target:"www.google.com" 
      } 
  }
 ```
 
-
-
+#### tcp_speed_test
+ ```
+ {
+	parameters:
+	 {
+			direction:"down" 
+     } 
+ }
 
 
 
