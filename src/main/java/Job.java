@@ -50,17 +50,10 @@ public class Job {
         return jobInterval != 0;
     }
 
-    public void addNodeCount(){
-        int count= currentNodeCount + 1;
+    public synchronized void addNodeCount(){
+        int count = currentNodeCount + 1;
         if(count <= requiredNodeCount) {
             this.currentNodeCount = count;
-        }
-    }
-
-    public void subtractNodeCount(){
-        int count= currentNodeCount - 1;
-        if(count >= 0) {
-            this.currentNodeCount =count;
         }
     }
 

@@ -27,7 +27,7 @@ public class Measurement{
             return sentJobs;
     }
 
-    public static void recordSuccessfulJob(JSONObject jobDesc){
+    public static boolean recordSuccessfulJob(JSONObject jobDesc){
          //assuming the JsonObj has key field mapping which measurement failed
         //TODO mellar needs to provide me with this info
          String key=jobDesc.getString("key");
@@ -35,9 +35,11 @@ public class Measurement{
              String currKey=(String)job.getMeasurementDesc().get("key");
              if(currKey.equals(key)){
                  job.addNodeCount();
-                 break;
+                 return true;
              }
          }
+         //false means the object is already removed since the count is reached
+         return false;
     }
 
     public static List<Job> getJobs(){

@@ -6,7 +6,7 @@ public class OrchAPI implements Callable {
 
     final String MEASUREMENT_REQUEST_TYPE="Measurement";
     final String MEASUREMENT_CHECK_IN_TYPE="checkIn";
-
+    final String MEASUREMENT_SUCCESSFUL="MeasurementSucceed";
     private JSONObject request;
 
     public OrchAPI(JSONObject request) {
@@ -25,8 +25,11 @@ public class OrchAPI implements Callable {
             Measurement.addMeasurement(request);
             return null; //or generate success response?;
        }
+
+       else if(requestType.equals(MEASUREMENT_SUCCESSFUL)) {
+           return Measurement.recordSuccessfulJob(request);
+       }
        else{
-           //TODO recording successful jobs
            throw new IllegalArgumentException();
        }
        return response;
