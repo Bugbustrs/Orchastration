@@ -47,24 +47,24 @@ request_type : "SCHEDULE_MEASUREMENT"
 i) Different measurements have different types as shown below
  #### Ping
 ```
-type:"ping"
+type:"PING"
 ```
 #### DNS Lookup
 ```
-type:"dns_lookup"
+type:"DNS_LOOKUP"
 ```
  #### HTTP
 ```
-type:"http"
+type:"HTTP"
 ```
  #### TCP SpeedTest
 ```
-type:"TCP Speed Test"
+type:"TCP_SPEED_TEST"
 ```
 
  #### Trace Route
 ```
-type:"traceroute"
+type:"TRACE_ROUTE"
 ```
 ## key
 Key which is the job ID has to be unique so as to easily map results to the experiment
