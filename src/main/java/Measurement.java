@@ -26,8 +26,7 @@ public class Measurement{
             }
             return sentJobs;
     }
-    //TODO reverse this to record successful as might remove it when some have failed
-    //and havent got the response yet
+
     public static void recordSuccessfulJob(JSONObject jobDesc){
          //assuming the JsonObj has key field mapping which measurement failed
         //TODO mellar needs to provide me with this info
