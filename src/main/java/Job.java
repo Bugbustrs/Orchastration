@@ -1,5 +1,6 @@
 import org.json.JSONObject;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Job {
     private JSONObject measurementDesc;
@@ -8,7 +9,8 @@ public class Job {
     private Date nextReset;
     private int jobInterval; //in hrs
     private int requiredNodeCount;
-    private int currentNodeCount;
+    private AtomicInteger currentNodeCount;
+    private int instance; //TODO its embedded on the measurementDesc
 
     public Job (JSONObject jobDesc){
         requiredNodeCount =jobDesc.getInt("node_count");
@@ -16,9 +18,9 @@ public class Job {
         measurementDesc=jobDesc.getJSONObject("measurement_description");
         startTime=Utils.getDate(measurementDesc.getString("start_time"));
         endTime=Utils.getDate(measurementDesc.getString("end_time")); //this field wont change
-        currentNodeCount = 0;
+        instance=1;
+        currentNodeCount = new AtomicInteger(0);
         setNextResetTime();
-        //TODO create nextReset
     }
 
     private void setNextResetTime(){
@@ -34,7 +36,6 @@ public class Job {
         //this can(needs to) be changed just need to be discussed as the end time might still be too far
         // although the phone will have been done with it  most likely
         measurementDesc.put("end_time",Utils.formatDate(nextReset));
-        //TODO will have to alter the priority based on the interval
         return measurementDesc;
     }
 
@@ -43,18 +44,17 @@ public class Job {
     }
 
     public boolean nodesReached(){
-        return currentNodeCount == requiredNodeCount;
+        return currentNodeCount.get() >= requiredNodeCount;
     }
 
     public boolean isRecurring(){
         return jobInterval != 0;
     }
 
-    public synchronized void addNodeCount(){
-        int count = currentNodeCount + 1;
-        if(count <= requiredNodeCount) {
-            this.currentNodeCount = count;
-        }
+    public void addNodeCount(int jobinstance){
+            if(currentNodeCount.get()<requiredNodeCount&&jobinstance==instance){ //results of the same job instance
+                currentNodeCount.getAndIncrement();
+            }
     }
 
     private boolean jobElapsed(){
@@ -85,7 +85,8 @@ public class Job {
 
     public void reset(){
         if(isRecurring()){
-            currentNodeCount =0;
+            currentNodeCount.set(0);
+            instance++;
             startTime=nextReset;
             //this will create a new Date obj thus start and next wont be pointing to the same object
             //will use new start time(obtained from the prev reset time) and interval to create the next Reset time

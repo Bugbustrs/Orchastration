@@ -1,14 +1,13 @@
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class JobTracker {
     private final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public static void startJobTracker(){
-        ScheduledFuture<?> jobHandle = scheduler.scheduleAtFixedRate(trackJobs(),10,15, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(trackJobs(),10,15, TimeUnit.MINUTES);
     }
 
     private static Runnable trackJobs(){
@@ -21,6 +20,7 @@ public class JobTracker {
     }
 
     public static void track(){
+            Measurement.acquireWriteLock();
             List<Job> activeJobs=Measurement.getJobs();
             //TODO synchronize appropriately as well as how often does the thread check
             //if end time is reached remove job
@@ -30,11 +30,11 @@ public class JobTracker {
                 Job job=activeJobs.get(i);
                 if(job.isRemovable()){
                     activeJobs.remove(i);
-                    continue;
                 }
-                if(job.isResettable()){
+                else if(job.isResettable()){
                     job.reset();
                 }
             }
+            Measurement.releaseWriteLock();
         }
 }
