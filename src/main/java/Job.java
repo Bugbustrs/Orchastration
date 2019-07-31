@@ -52,7 +52,8 @@ public class Job {
     }
 
     public void addNodeCount(int jobinstance){
-            if(currentNodeCount.get()<requiredNodeCount&&jobinstance==instance){ //results of the same job instance
+        //ensures results of the same job instance
+            if(jobinstance==instance){
                 currentNodeCount.getAndIncrement();
             }
     }
@@ -73,14 +74,8 @@ public class Job {
     }
 
     public boolean isResettable(){
-     if(!isRecurring()) return false; //if the job does not need to be repeated then doesnt need to be reset
-
-         //if it is recurring and the node count is reached reset
-         //if the next reset time is reached then reset the time and nodes (might need to change TODO ASK JOSIAH)
-         // and wait for the next repetition of the job
-     else {
-         return nodesReached()|| nextReset.after(startTime);
-     }
+     if(!isRecurring()) return false;
+     return nodesReached()|| nextReset.after(startTime);
     }
 
     public void reset(){
@@ -93,4 +88,5 @@ public class Job {
             setNextResetTime();
         }
     }
+
 }
