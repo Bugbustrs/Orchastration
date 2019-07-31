@@ -10,7 +10,7 @@ public class Job {
     private int jobInterval; //in hrs
     private int requiredNodeCount;
     private AtomicInteger currentNodeCount;
-    private int instance; //TODO its embedded on the measurementDesc
+    //TODO its embedded on the measurementDesc
 
     public Job (JSONObject jobDesc){
         requiredNodeCount =jobDesc.getInt("node_count");
@@ -18,7 +18,6 @@ public class Job {
         measurementDesc=jobDesc.getJSONObject("measurement_description");
         startTime=Utils.getDate(measurementDesc.getString("start_time"));
         endTime=Utils.getDate(measurementDesc.getString("end_time")); //this field wont change
-        instance=1;
         currentNodeCount = new AtomicInteger(0);
         setNextResetTime();
     }
@@ -53,9 +52,7 @@ public class Job {
 
     public void addNodeCount(int jobinstance){
         //ensures results of the same job instance
-            if(jobinstance==instance){
-                currentNodeCount.getAndIncrement();
-            }
+        currentNodeCount.getAndIncrement();
     }
 
     private boolean jobElapsed(){
@@ -81,7 +78,6 @@ public class Job {
     public void reset(){
         if(isRecurring()){
             currentNodeCount.set(0);
-            instance++;
             startTime=nextReset;
             //this will create a new Date obj thus start and next wont be pointing to the same object
             //will use new start time(obtained from the prev reset time) and interval to create the next Reset time
