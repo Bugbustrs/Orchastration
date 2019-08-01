@@ -7,8 +7,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 //this class will hold jobs
 public class Measurement{
-   private static List<Job> activeJobs=new ArrayList<Job>();
-   private final static ReentrantReadWriteLock readWriteLock=new ReentrantReadWriteLock();
+   private static List<Job> activeJobs;
+   private static ReentrantReadWriteLock readWriteLock;
+
+   public static void init(){
+       activeJobs = new ArrayList<Job>();
+       readWriteLock = new ReentrantReadWriteLock();
+   }
 
    public static boolean addMeasurement(JSONObject jobRequest){
             acquireWriteLock();

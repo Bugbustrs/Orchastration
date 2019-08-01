@@ -85,4 +85,16 @@ public class Job {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Job{" +
+                "measurementDesc=" + measurementDesc +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", nextReset=" + nextReset +
+                ", jobInterval=" + jobInterval +
+                ", requiredNodeCount=" + requiredNodeCount +
+                ", currentNodeCount=" + currentNodeCount +
+                '}';
+    }
 }
