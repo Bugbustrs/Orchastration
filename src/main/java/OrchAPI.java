@@ -2,21 +2,20 @@ import org.json.JSONObject;
 
 import java.util.concurrent.Callable;
 
-public class OrchAPI implements Callable {
+public class OrchAPI {
 
-    final String MEASUREMENT_REQUEST_TYPE="Measurement";
+    final String MEASUREMENT_REQUEST_TYPE="SCHEDULE_MEASUREMENT";
     final String MEASUREMENT_CHECK_IN_TYPE="checkIn";
     final String MEASUREMENT_SUCCESSFUL="MeasurementSucceed";
-    private JSONObject request;
 
-    public OrchAPI(JSONObject request) {
-        this.request = request;
+    public OrchAPI() {
+
     }
 
-    public Object call() {
+    public Object returnResponse(JSONObject request){
        String requestType = (String)request.get("request_type");
        Object response=null; //dont know if ts a string or a json object is needed as of yet?
-       if(requestType.equals(MEASUREMENT_CHECK_IN_TYPE)){
+       if(requestType.equalsIgnoreCase(MEASUREMENT_CHECK_IN_TYPE)){
            //send the client a list of available jobs;
            response=Measurement.getActiveJobs();
        }
