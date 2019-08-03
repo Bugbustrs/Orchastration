@@ -25,8 +25,8 @@ public class Job {
     private void setNextResetTime(){
         //if not recurring creating a new next reset time is useless as wont use this field
         //otherwise
-        if(isRecurring()) {
-            this.nextReset=Utils.addHours(startTime,jobInterval);
+        if(isRecurring()){
+            this.nextReset = Utils.addHours(startTime,jobInterval);
         }
     }
     //get job with the right parameters in the measurement desc
@@ -34,7 +34,9 @@ public class Job {
         measurementDesc.put("start_time",Utils.formatDate(startTime));
         //this can(needs to) be changed just need to be discussed as the end time might still be too far
         // although the phone will have been done with it  most likely
-        measurementDesc.put("end_time",Utils.formatDate(nextReset));
+       if(isRecurring()){
+           measurementDesc.put("end_time", Utils.formatDate(nextReset));
+       }
         return measurementDesc;
     }
 
@@ -50,7 +52,7 @@ public class Job {
         return jobInterval != 0;
     }
 
-    public void addNodeCount(int jobinstance){
+    public void addNodeCount(){
         //ensures results of the same job instance
         currentNodeCount.getAndIncrement();
     }
@@ -70,9 +72,9 @@ public class Job {
         return false; //then is recurring and
     }
 
-    public boolean isResettable(){
+    public boolean isResettable(Date currentTime){
      if(!isRecurring()) return false;
-     return nodesReached()|| nextReset.after(startTime);
+     return nodesReached()|| currentTime.after(nextReset);
     }
 
     public void reset(){
@@ -87,14 +89,14 @@ public class Job {
 
     @Override
     public String toString() {
-        return "Job{" +
+        return "\nJob{" +
                 "measurementDesc=" + measurementDesc +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", nextReset=" + nextReset +
+                ", startTime=" + Utils.formatDate(startTime) +
+                ", endTime=" + Utils.formatDate(endTime) +
+                ", nextReset=" + Utils.formatDate(nextReset) +
                 ", jobInterval=" + jobInterval +
                 ", requiredNodeCount=" + requiredNodeCount +
                 ", currentNodeCount=" + currentNodeCount +
-                '}';
+                "}";
     }
 }
