@@ -17,9 +17,7 @@ public class Measurement {
     }
 
     public static boolean addMeasurement(JSONObject jobRequest) {
-        System.out.println("In add Measurement Methods");
         acquireWriteLock();
-        System.out.println("Got the lock");
         if (jobRequest == null) return false;
         //TODO there is need for error checking for valid jobRequest structure before addition
         System.out.println(jobRequest.toString());
@@ -31,12 +29,12 @@ public class Measurement {
         return true;
     }
 
-    public static JSONArray getActiveJobs() {
+    public static JSONArray getActiveJobs(){
         acquireReadLock();
         JSONArray sentJobs = new JSONArray();
         Date currentTime = new Date();
         for (Job job : activeJobs) {
-            if (job.canStart(currentTime) && !job.isResettable() && !job.isRemovable()) {
+            if (job.canStart(currentTime) && !job.isRemovable() && !job.isResettable(currentTime)) {
                 sentJobs.put(job.getMeasurementDesc());
             }
         }
@@ -44,24 +42,25 @@ public class Measurement {
         return sentJobs;
     }
 
-    public static JSONArray getjobs() {
-        JSONArray sentJobs = new JSONArray();
-        for (Job job : activeJobs) {
+    public static JSONArray getAllJobs(){
+        acquireReadLock();
+        JSONArray sentJobs= new JSONArray();
+        for(Job job:activeJobs){
             sentJobs.put(job.getMeasurementDesc());
         }
+        releaseReadLock();
         return sentJobs;
     }
 
-
     public static boolean recordSuccessfulJob(JSONObject jobDesc) {
         //assuming the JsonObj has key field mapping which measurement failed
-        //TODO mellar needs to provide me with this info KEY AND INSTANCE
-        String key = jobDesc.getString("key");
-        int instance = jobDesc.getInt("instance");
+        String key = jobDesc.getString("task_key");
+        //int instance = jobDesc.getInt("instance");
         for (Job job : activeJobs) {
             String currKey = (String) job.getMeasurementDesc().get("key");
-            if (currKey.equals(key)) {
-                job.addNodeCount(instance);
+            if (currKey.equals(key) && jobDesc.getBoolean("success")){
+                job.addNodeCount();
+                if(job.nodesReached()) System.out.println("\nJobs with Key "+key+" has Reached its Req Node count\n");
                 return true;
             }
         }

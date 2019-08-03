@@ -5,13 +5,13 @@ import java.util.concurrent.Callable;
 public class OrchAPI {
 
     private final static String MEASUREMENT_SCHEDULE="SCHEDULE_MEASUREMENT";
-    private final static String MEASUREMENT_CHECK_IN_TYPE="CHECKIN";
     private final static String MEASUREMENT_SUCCESSFUL="MEASUREMENT_SUCCESSFUL";
+    private final static String MEASUREMENT_CHECK_IN_TYPE="CHECKIN";
 
     public static Object returnResponse(JSONObject request){
        String requestType = (String)request.get("request_type");
        Object response=null;
-       if(requestType.equals(MEASUREMENT_CHECK_IN_TYPE)){
+       if(requestType.equalsIgnoreCase(MEASUREMENT_CHECK_IN_TYPE)){
            //send the client a list of available jobs;
            response=Measurement.getActiveJobs();
            return response;
