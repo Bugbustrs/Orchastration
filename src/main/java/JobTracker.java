@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public class JobTracker {
     private final static int INIT_DELAY=1;
-    private final static int PERIOD = 5;
+    private final static int PERIOD = 1;
     private final static int THREAD_POOL_SIZE = 1;
     private final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(THREAD_POOL_SIZE);
     public static void startJobTracker(){

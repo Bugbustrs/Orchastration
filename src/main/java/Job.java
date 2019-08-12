@@ -20,6 +20,7 @@ public class Job {
         endTime=Utils.getDate(measurementDesc.getString("end_time")); //this field wont change
         currentNodeCount = new AtomicInteger(0);
         setNextResetTime();
+        addExperimentTag();
     }
 
     private void setNextResetTime(){
@@ -29,6 +30,11 @@ public class Job {
             this.nextReset = Utils.addHours(startTime,jobInterval);
         }
     }
+    private void addExperimentTag(){
+        JSONObject parameters=measurementDesc.getJSONObject("parameters");
+        parameters.put("Experiment","true");
+    }
+
     //get job with the right parameters in the measurement desc
     public JSONObject getMeasurementDesc() {
         measurementDesc.put("start_time",Utils.formatDate(startTime));

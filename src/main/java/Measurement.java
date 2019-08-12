@@ -59,6 +59,7 @@ public class Measurement {
         for (Job job : activeJobs) {
             String currKey = (String) job.getMeasurementDesc().get("key");
             if (currKey.equals(key) && jobDesc.getBoolean("success")){
+                System.out.println("Job with key : "+currKey+"has been incrimented by one");
                 job.addNodeCount();
                 if(job.nodesReached()) System.out.println("\nJobs with Key "+key+" has Reached its Req Node count\n");
                 return true;
