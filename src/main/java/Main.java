@@ -4,6 +4,5 @@ public class Main {
     public static void main(String[] args) {
         //add experiment
         //checkin
-        OrchServer.start();
     }
 }
