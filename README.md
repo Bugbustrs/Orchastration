@@ -122,16 +122,40 @@ priority:1000
  }
 ```
 
-
 ####  HTTP
  ```
  {
 	parameters:
 	 {
-			url:"www.google.com" 
+			target:"www.google.com" 
+			method : "get" //or post
      } 
  }
 ```
+
+####  TCP
+ ```
+ {
+	parameters:
+	 {
+			"target":"www.vula.uct.ac.za"
+			"dir_up":"true"  //or if downspeed false 
+     } 
+ }
+```
+
+### TRACEROUTE
+ ```
+ {
+	parameters:
+	 {
+			"target":"www.vula.uct.ac.za"
+     } 
+ }
+```
+
+
+
 
 
 
