@@ -127,8 +127,7 @@ priority:1000
  {
 	parameters:
 	 {
-			target:"www.google.com" 
-			method : "get" //or post
+			target:"www.google.com"
      } 
  }
 ```
@@ -138,8 +137,8 @@ priority:1000
  {
 	parameters:
 	 {
-			"target":"www.vula.uct.ac.za"
-			"dir_up":"true"  //or if downspeed false 
+			"target":"mlab"
+			"dir_up":"true"  //or if download speed then "false" as a string 
      } 
  }
 ```
