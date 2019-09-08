@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public class JobTracker {
     private final static int INIT_DELAY=1;
-    private final static int PERIOD = 1;
+    private final static int PERIOD = 2;
     private final static int THREAD_POOL_SIZE = 1;
     private final static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(THREAD_POOL_SIZE);
     public static void startJobTracker(){
@@ -36,13 +36,14 @@ public class JobTracker {
                 Job job=activeJobs.get(i);
                 if(job.isRemovable()){
                     activeJobs.remove(i);
-                    System.out.println("Job is Removed");
+                    System.out.println("Job is with "+job.getMeasurementDesc().get("key") +"Removed");
                 }
                 else if(job.isResettable(currentTime)){
                     job.reset();
-                    System.out.println("Job is Reset");
+                    System.out.println("Job is with "+job.getMeasurementDesc().get("key") +" is Reset");
                 }
             }
+            System.out.println("Current Job Size is " + activeJobs.size());
             Measurement.releaseWriteLock();
             System.out.println("Job Tracker has Finished");
         }

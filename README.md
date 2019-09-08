@@ -122,16 +122,39 @@ priority:1000
  }
 ```
 
-
 ####  HTTP
  ```
  {
 	parameters:
 	 {
-			url:"www.google.com" 
+			target:"www.google.com"
      } 
  }
 ```
+
+####  TCP
+ ```
+ {
+	parameters:
+	 {
+			"target":"mlab"
+			"dir_up":"true"  //or if download speed then "false" as a string 
+     } 
+ }
+```
+
+### TRACEROUTE
+ ```
+ {
+	parameters:
+	 {
+			"target":"www.vula.uct.ac.za"
+     } 
+ }
+```
+
+
+
 
 
 

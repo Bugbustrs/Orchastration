@@ -38,6 +38,7 @@ public class Measurement {
                 sentJobs.put(job.getMeasurementDesc());
             }
         }
+        System.out.println("Sent Jobs size is "+sentJobs.length());
         releaseReadLock();
         return sentJobs;
     }
